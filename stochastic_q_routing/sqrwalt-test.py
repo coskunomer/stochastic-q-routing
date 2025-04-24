@@ -78,7 +78,7 @@ for seed in range(num_runs):
 avg_over_runs = np.mean(all_runs_delivery_times, axis=0)
 std_dev = np.std(all_runs_delivery_times, axis=0)
 
-np.savez("sqrwalt_results.npz", time=np.array(time_points), avg=avg_over_runs, std=std_dev)
+np.savez("results/sqr_results.npz", time=np.array(time_points), avg=avg_over_runs, std=std_dev)
 
 # ----------------------------------------
 # Plotting
