@@ -1,6 +1,13 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+
+
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from Network import Network
 from stochastic_q_routing.SQRWALT import SQRWALT
 from layout import generate_irregular_grid
@@ -9,11 +16,11 @@ from layout import generate_irregular_grid
 # Config
 # ----------------------------------------
 phases = [
-    (300_000, 2.5),
-    (1_000_000, 3.5),  # High load phase
-    (300_000, 2.5),
+    (300_000, 2.5), 
+    (1_000_000, 3.5),   
+    (300_000, 2.5), 
 ]
-record_interval = 10_000
+record_interval = 50_000
 update_interval = 10
 num_runs = 10
 
@@ -78,7 +85,7 @@ for seed in range(num_runs):
 avg_over_runs = np.mean(all_runs_delivery_times, axis=0)
 std_dev = np.std(all_runs_delivery_times, axis=0)
 
-np.savez("results/sqr_results.npz", time=np.array(time_points), avg=avg_over_runs, std=std_dev)
+np.savez("results/sqrwalt_results_ema.npz", time=np.array(time_points), avg=avg_over_runs, std=std_dev)
 
 # ----------------------------------------
 # Plotting

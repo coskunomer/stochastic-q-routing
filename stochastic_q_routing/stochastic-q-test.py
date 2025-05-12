@@ -11,9 +11,9 @@ net = Network(graph, StochasticQNode)
 
 # traffic pattern: (steps, load)
 phases = [
-    (1_000_000, 2.5), 
+    (300_000, 2.5), 
     (1_000_000, 3.5),   
-    (1_000_000, 2.5), 
+    (300_000, 2.5), 
 ]
 record_interval = 50_000
 

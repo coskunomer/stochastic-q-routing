@@ -1,35 +1,34 @@
 import random
 import math
+import numpy as np
 from collections import deque
-from q_routing. QNode import QNode
+from q_routing.QNode import QNode
+
 
 class SQRWALT(QNode):
     def __init__(self, node_id, neighbors, network):
         super().__init__(node_id, neighbors, network)
 
         self.temperature = 1
-        self.queue_history = deque(maxlen=64)
+        self.queue_history = deque(maxlen=32)
 
     def process(self):
         return super().process()
 
     def tick_update(self):
-        pass
-        #self.queue_history.append(len(self.queue))
-        #self.categorize_temperature()
+        self.queue_history.append(len(self.queue))
+        self.categorize_temperature()
 
     def categorize_temperature(self):
+        avg = np.mean(self.queue_history)
         slope = self._queue_trend_slope(self.queue_history)
 
-        if abs(slope) < 0.01:
-            new_temp = max(1e-10, abs(slope))
-        else: 
-            new_temp = 1
-
-        if self.id == 10 and (not hasattr(self, "_last_temp") or self._last_temp != new_temp):
-            self._last_temp = new_temp
-
-        self.temperature = new_temp
+        mutliplier = 5
+        if avg < 0.1:
+            mutliplier = 0.1
+        elif avg > 20:
+            mutliplier = 20
+        self.temperature = max(1e-10, mutliplier * abs(slope))
 
     def _queue_trend_slope(self, history):
         n = len(history)

@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 # ----------------------------------------
 q_data = np.load("results/q_routing_results.npz")
 sqr_data = np.load("results/sqr_results.npz")
+sqrwalt_data = np.load("results/sqrwalt_results.npz")
 
 q_time = q_data["time"]
 q_avg = q_data["avg"]
@@ -14,6 +15,10 @@ q_std = q_data["std"]
 sqr_time = sqr_data["time"]
 sqr_avg = sqr_data["avg"]
 sqr_std = sqr_data["std"]
+
+sqrwalt_time = sqrwalt_data["time"]  
+sqrwalt_avg = sqrwalt_data["avg"] 
+sqrwalt_std = sqrwalt_data["std"] 
 
 # ----------------------------------------
 # Plotting
@@ -24,14 +29,22 @@ plt.figure(figsize=(10, 5))
 plt.plot(q_time, q_avg, label="Q-Routing", color="blue")
 plt.fill_between(q_time, q_avg - q_std, q_avg + q_std, color="blue", alpha=0.2)
 
-# SQRWALT
+# SQR
 plt.plot(sqr_time, sqr_avg, label="SQR", color="green")
 plt.fill_between(sqr_time, sqr_avg - sqr_std, sqr_avg + sqr_std, color="green", alpha=0.2)
+
+# SQRWALT
+plt.plot(sqrwalt_time, sqrwalt_avg, label="SQRWALT", color="red")
+plt.fill_between(sqrwalt_time, sqrwalt_avg - sqrwalt_std, sqrwalt_avg + sqrwalt_std, color="red", alpha=0.2)
 
 # High Load Markers
 hl_start_x = 300_000
 hl_end_x = 1_300_000
-y_max = max(np.max(q_avg + q_std), np.max(sqr_avg + sqr_std))
+y_max = max(
+    np.max(q_avg + q_std),
+    np.max(sqr_avg + sqr_std),
+    np.max(sqrwalt_avg + sqrwalt_std)
+)
 
 plt.axvline(x=hl_start_x, color="red", linestyle="dotted")
 plt.axvline(x=hl_end_x, color="red", linestyle="dotted")
@@ -73,3 +86,4 @@ def print_stats(name, time_array, avg_array):
 
 print_stats("Q-Routing", q_time, q_avg)
 print_stats("SQR", sqr_time, sqr_avg)
+print_stats("SQRWALT", sqrwalt_time, sqrwalt_avg) 
