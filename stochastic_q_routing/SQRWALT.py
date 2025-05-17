@@ -26,7 +26,7 @@ class SQRWALT(QNode):
         mutliplier = 5
         if avg < 0.1:
             mutliplier = 0.1
-        elif avg > 20:
+        elif avg > 10:
             mutliplier = 20
         self.temperature = max(1e-10, mutliplier * abs(slope))
 

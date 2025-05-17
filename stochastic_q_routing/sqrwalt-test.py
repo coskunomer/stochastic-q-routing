@@ -6,19 +6,22 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
+
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Network import Network
 from stochastic_q_routing.SQRWALT import SQRWALT
 from layout import generate_irregular_grid
+from dense_layout import generate_dense_irregular_grid
 
 # ----------------------------------------
 # Config
 # ----------------------------------------
 phases = [
-    (300_000, 2.5), 
-    (1_000_000, 3.5),   
-    (300_000, 2.5), 
+    (300_000, 5.5),
+    (1_000_000, 6.75),  # <-- High load
+    (300_000, 5.5),
 ]
 record_interval = 50_000
 update_interval = 10
@@ -34,7 +37,7 @@ for seed in range(num_runs):
     print(f"\n🎲 Run {seed + 1}/{num_runs} — Seed = {seed}")
     random.seed(seed)
 
-    graph, _ = generate_irregular_grid()
+    graph, _ = generate_dense_irregular_grid()
     net = Network(graph, SQRWALT)
 
     run_delivery_times = []
@@ -85,7 +88,7 @@ for seed in range(num_runs):
 avg_over_runs = np.mean(all_runs_delivery_times, axis=0)
 std_dev = np.std(all_runs_delivery_times, axis=0)
 
-np.savez("results/sqrwalt_results_ema.npz", time=np.array(time_points), avg=avg_over_runs, std=std_dev)
+np.savez("results/dense/sqrwalt_results_ema.npz", time=np.array(time_points), avg=avg_over_runs, std=std_dev)
 
 # ----------------------------------------
 # Plotting
